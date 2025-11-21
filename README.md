@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meninos do Marketing</title>
+
+  <!-- Fonte -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-soft: #0b1120;
+      --card: #020617;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #f97316;
+      --accent-soft: #fb923c;
+      --border-soft: rgba(148, 163, 184, 0.35);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 55%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(2,6,23,0.96), rgba(2,6,23,0.7), transparent);
+      border-bottom: 1px solid rgba(15,23,42,0.7);
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .tagline {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 12px;
+    }
+
+    nav button,
+    nav a {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 4px 0;
+      font: inherit;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    nav button::after,
+    nav a.nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0;
+      height: 1px;
+      background: linear-gradient(to right, var(--accent), var(--accent-soft));
+      transition: width 0.18s ease;
+    }
+
+    nav button:hover::after,
+    nav a.nav-link:hover::after {
+      width: 100%;
+    }
+
+    nav button:hover,
+    nav a:hover {
+      color: var(--text);
+    }
+
+    nav .nav-cta {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+    }
+
+    nav .nav-cta:hover {
+      background: rgba(15,23,42,0.9);
+      border-color: var(--text);
+    }
+
+    main {
+      flex: 1;
+    }
+
+    /* "PÁGINAS" INTERNAS */
+
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* HERO */
+
+    .hero {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 36px;
+      align-items: center;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 24px;
+      }
+    }
+
+    .hero-kicker {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .hero-title {
+      font-size: clamp(26px, 3.6vw, 40px);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .hero-title span {
+      color: var(--accent);
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 18px;
+      max-width: 520px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+      color: #020617;
+      box-shadow: 0 16px 40px rgba(248, 113, 113, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 48px rgba(248, 113, 113, 0.42);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: rgba(148,163,184,0.7);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--text);
+      background: rgba(15,23,42,0.85);
+    }
+
+    .hero-note {
+      font-size: 12px;
+      color: var(--muted);
+      max-width: 460px;
+    }
+
+    /* IMAGEM – TAMANHO MÉDIO */
+
+    .hero-image {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-image img {
+      width: 100%;
+      max-width: 360px;   /* tamanho médio controlado */
+      border-radius: 20px;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.7);
+      transform: translateY(0);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .hero-image img:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 26px 70px rgba(0,0,0,0.8);
+    }
+
+    /* SEÇÕES / CARDS */
+
+    .section-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
+    }
+
+    .section-header {
+      margin-bottom: 16px;
+    }
+
+    .section-kicker {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .section-text {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    .feature-card {
+      background: rgba(15,23,42,0.96);
+      border-radius: 14px;
+      border: 1px solid rgba(55,65,81,0.95);
+      padding: 14px 14px 12px;
+      font-size: 13px;
+      color: var(--muted);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 50px rgba(15,23,42,0.95);
+      border-color: var(--border-soft);
+      background: rgba(15,23,42,0.98);
+    }
+
+    .feature-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    /* PLANOS */
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .plans-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .plans-grid { grid-template-columns: 1fr; }
+    }
+
+    .plan-card {
+      background: rgba(15,23,42,0.96);
+      border-radius: 14px;
+      border: 1px solid rgba(55,65,81,0.95);
+      padding: 14px 14px 12px;
+      font-size: 13px;
+      color: var(--muted);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 50px rgba(15,23,42,0.95);
+      border-color: var(--border-soft);
+      background: rgba(15,23,42,0.98);
+    }
+
+    .plan-card.highlight {
+      border-color: var(--accent);
+      box-shadow: 0 24px 60px rgba(248, 113, 113, 0.35);
+    }
+
+    .plan-name {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .plan-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .plan-tagline {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .plan-benefits {
+      margin-top: 6px;
+      padding-left: 16px;
+    }
+
+    .plan-benefits li {
+      margin-bottom: 4px;
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid rgba(15,23,42,0.9);
+      padding: 16px 20px 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- HEADER -->
+    <header>
+      <div class="header-inner">
+        <div class="logo-block">
+          <div class="logo"><span>MENINOS</span> DO MARKETING</div>
+          <div class="tagline">Vídeos estratégicos para empresas que querem vender mais</div>
+        </div>
+        <nav>
+          <button data-page="home">Início</button>
+          <button data-page="sobre">Sobre</button>
+          <button data-page="planos">Planos</button>
+          <a class="nav-link" href="https://instagram.com/osmenino.marketing" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a class="nav-cta" href="https://wa.me/5544998215568" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- HOME -->
+      <section id="home" class="page-section active">
+        <section class="hero">
+          <div>
+            <div class="hero-kicker">Marketing em vídeo</div>
+            <h1 class="hero-title">
+              Vídeos estratégicos que <span>atraem clientes</span> todos os dias.
+            </h1>
+            <p class="hero-subtitle">
+              Nós criamos, gravamos e editamos vídeos profissionais para Instagram,
+              focados em posicionamento, desejo e aumento real de faturamento.
+            </p>
+            <div class="hero-ctas">
+              <a href="https://wa.me/5544998215568" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                Falar no WhatsApp
+              </a>
+              <button class="btn btn-outline" data-page="sobre">
+                Saiba mais sobre o trabalho
+              </button>
+            </div>
+            <p class="hero-note">
+              Ideal para empresas locais que querem parar de postar por postar
+              e começar a postar com estratégia e constância.
+            </p>
+          </div>
+
+          <div class="hero-image">
+            <!-- SUA IMAGEM AQUI -->
+            <img src="ledmnn.jpeg" alt="Meninos do Marketing">
+          </div>
+        </section>
+
+        <section class="section-inner">
+          <div class="section-header">
+            <div class="section-kicker">Por que vídeos?</div>
+            <h2 class="section-title">Seu cliente passa o dia rolando o feed</h2>
+            <p class="section-text">
+              Ou a sua empresa aparece ali de forma profissional, ou alguém aparece no seu lugar.
+              Os vídeos certos fazem a pessoa parar, prestar atenção, entender o que você faz
+              e dar o próximo passo: chamar no WhatsApp ou ir até a sua empresa.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="feature-title">Mais faturamento</div>
+              <p>Vídeos claros geram desejo, quebram objeções e aumentam as chances de fechar negócio.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-title">Marca forte</div>
+              <p>Constância e qualidade fazem sua empresa ser lembrada como referência no que faz.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-title">Vendas sem ser chato</div>
+              <p>Conteúdo leve, humano e profissional, que vende sem parecer propaganda cansativa.</p>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- SOBRE -->
+      <section id="sobre" class="page-section">
+        <section class="hero">
+          <div>
+            <div class="hero-kicker">Quem somos</div>
+            <h1 class="hero-title">
+              Meninos do Marketing: conteúdo simples, estratégico e possível na sua rotina.
+            </h1>
+            <p class="hero-subtitle">
+              Sabemos que o dono de empresa cuida de mil coisas. Pensar em roteiro, gravar,
+              editar e postar todos os dias pode virar um peso. A nossa função é tirar isso das suas costas.
+            </p>
+            <div class="hero-ctas">
+              <a href="https://wa.me/5544998215568" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                Falar com o time
+              </a>
+              <button class="btn btn-outline" data-page="planos">
+                Ver planos de conteúdo
+              </button>
+            </div>
+            <p class="hero-note">
+              Você foca em tocar a operação. Nós organizamos o que precisa ser comunicado
+              para o público certo, do jeito certo, na hora certa.
+            </p>
+          </div>
+
+          <div class="hero-image">
+            <img src="banner-meninos.jpeg" alt="Equipe Meninos do Marketing">
+          </div>
+        </section>
+      </section>
+
+      <!-- PLANOS -->
+      <section id="planos" class="page-section">
+        <section class="section-inner">
+          <div class="section-header">
+            <div class="section-kicker">Planos</div>
+            <h2 class="section-title">Escolha o nível de presença digital da sua empresa</h2>
+            <p class="section-text">
+              Os planos abaixo são exemplos de estruturas que podemos trabalhar.
+              Os valores são definidos de acordo com a realidade da sua empresa e o volume de conteúdos.
+            </p>
+          </div>
+
+          <div class="plans-grid">
+            <div class="plan-card">
+              <div class="plan-name">Plano 1</div>
+              <div class="plan-title">Presença</div>
+              <div class="plan-tagline">Para quem quer começar a aparecer com consistência.</div>
+              <ul class="plan-benefits">
+                <li>4 vídeos estratégicos por mês;</li>
+                <li>Roteiro, gravação e edição;</li>
+                <li>Foco em manter a marca ativa no feed.</li>
+              </ul>
+            </div>
+
+            <div class="plan-card highlight">
+              <div class="plan-name">Plano 2</div>
+              <div class="plan-title">Crescimento</div>
+              <div class="plan-tagline">Para quem já entendeu o poder do conteúdo e quer acelerar.</div>
+              <ul class="plan-benefits">
+                <li>8 vídeos estratégicos por mês;</li>
+                <li>Formatos variados (institucional, bastidores, oferta);</li>
+                <li>Planejamento de funil de conteúdo.</li>
+              </ul>
+            </div>
+
+            <div class="plan-card">
+              <div class="plan-name">Plano 3</div>
+              <div class="plan-title">Domínio</div>
+              <div class="plan-tagline">Para quem quer ser realmente lembrado na região.</div>
+              <ul class="plan-benefits">
+                <li>12 vídeos estratégicos por mês;</li>
+                <li>Presença forte no feed e Stories;</li>
+                <li>Conteúdos pensados para dominar a mente do público.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <div>© <span id="year"></span> Meninos do Marketing. Todos os direitos reservados.</div>
+        <div class="footer-links">
+          <a href="#" data-page="home">Início</a>
+          <a href="#" data-page="sobre">Sobre</a>
+          <a href="#" data-page="planos">Planos</a>
+          <a href="https://instagram.com/osmenino.marketing" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Ano automático
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Navegação entre "páginas" internas
+    const sections = document.querySelectorAll(".page-section");
+    const pageButtons = document.querySelectorAll("[data-page]");
+
+    function showPage(id) {
+      sections.forEach(sec => sec.classList.remove("active"));
+      const target = document.getElementById(id);
+      if (target) {
+        target.classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    pageButtons.forEach(el => {
+      el.addEventListener("click", (event) => {
+        event.preventDefault();
+        const target = el.getAttribute("data-page");
+        if (target) showPage(target);
+      });
+    });
+  </script>
+</body>
+</html>
